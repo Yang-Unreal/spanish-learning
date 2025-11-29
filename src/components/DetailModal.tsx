@@ -50,7 +50,9 @@ export default function DetailModal(props: DetailModalProps) {
   });
 
   const playAudio = () => {
-    console.log(`Playing audio for: ${props.item.word}`);
+    const audioUrl = `https://audio1.spanishdict.com/audio?lang=es&text=${encodeURIComponent(props.item.word)}`;
+    const audio = new Audio(audioUrl);
+    audio.play().catch((err) => console.error("Error playing audio:", err));
   };
 
   return (
