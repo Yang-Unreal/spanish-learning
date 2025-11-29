@@ -114,11 +114,11 @@ export default function DetailModal(props: DetailModalProps) {
         </div>
 
         {/* Tabs */}
-        <div class="flex border-b border-gray-100 px-8">
+        <div class="flex border-b border-gray-100 px-4 sm:px-8">
           {(["Usage", "Grammar", "Examples"] as const).map((tab) => (
             <button
               type="button"
-              class={`py-4 px-6 font-medium text-lg transition-colors relative ${
+              class={`py-3 sm:py-4 px-3 sm:px-6 font-medium text-sm sm:text-lg transition-colors relative flex-1 sm:flex-initial ${
                 activeTab() === tab
                   ? "text-primary"
                   : "text-gray-400 hover:text-gray-600"
