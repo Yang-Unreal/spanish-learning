@@ -162,11 +162,15 @@ export default function DetailModal(props: DetailModalProps) {
           </Show>
 
           <Show when={activeTab() === "Examples"}>
-            <div class="bg-gray-50 p-6 rounded-xl border border-gray-100">
-              <p class="text-xl text-accent font-medium italic mb-2">
-                "{props.item.example}"
-              </p>
-              <p class="text-gray-500">Example sentence using the word in context.</p>
+            <div class="bg-gray-50 p-6 rounded-xl border border-gray-100 space-y-4">
+              <div>
+                <p class="text-xl text-accent font-medium italic mb-2">
+                  "{props.item.example}"
+                </p>
+                <p class="text-lg text-gray-600">
+                  {props.item.exampleTranslation}
+                </p>
+              </div>
             </div>
           </Show>
         </div>
