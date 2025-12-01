@@ -162,7 +162,7 @@ export default function Home() {
 				{/* Vocabulary Grid */}
 				<div
 					ref={cardsContainerRef}
-					class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 min-h-[600px] transition-opacity duration-300"
+					class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 min-h-[600px] items-start transition-opacity duration-300"
 					style={{ opacity: query.isFetching && flattenedWords().length === 0 ? 0.5 : 1 }}
 				>
 					<For each={flattenedWords()}>
