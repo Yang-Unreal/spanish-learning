@@ -1,9 +1,11 @@
+import { type InfiniteData, useInfiniteQuery } from "@tanstack/solid-query";
 import { gsap } from "gsap";
 import { FiZap } from "solid-icons/fi";
-import { createSignal, For, Show } from "solid-js";
+import { createEffect, createSignal, For, onCleanup, Show } from "solid-js";
 import DetailModal from "../components/DetailModal";
 import WordCard from "../components/WordCard";
-import { type VocabularyItem, vocabularyData } from "../vocabularyData";
+import type { Word } from "../db/schema";
+import { getWords } from "../lib/api";
 
 export default function Home() {
 	// State
@@ -11,33 +13,70 @@ export default function Home() {
 		"Basic" | "Intermediate" | "Advanced"
 	>("Basic");
 	const [selectedCategory, setSelectedCategory] = createSignal<string>("All");
-	const [selectedWord, setSelectedWord] = createSignal<VocabularyItem | null>(
-		null,
-	);
+	const [selectedWord, setSelectedWord] = createSignal<Word | null>(null);
+
+	// Data
+	const query = useInfiniteQuery<
+		Word[],
+		Error,
+		InfiniteData<Word[]>,
+		[string, string, string],
+		number
+	>(() => ({
+		queryKey: ["words", currentLevel(), selectedCategory()],
+		queryFn: async ({ pageParam }) => {
+			return getWords(pageParam, 20, currentLevel(), selectedCategory());
+		},
+		getNextPageParam: (lastPage, allPages) => {
+			return lastPage.length === 20 ? allPages.length + 1 : undefined;
+		},
+		initialPageParam: 1,
+		placeholderData: (previousData) => previousData,
+		staleTime: 1000 * 60 * 5, // 5 minutes
+	}));
 
 	// Refs
 	let categoryRailRef: HTMLDivElement | undefined;
 	let cardsContainerRef: HTMLDivElement | undefined;
 	let levelPillRef: HTMLDivElement | undefined;
+	let loadMoreRef: HTMLDivElement | undefined;
+
+	// Intersection Observer for Infinite Scroll
+	createEffect(() => {
+		if (!loadMoreRef) return;
+
+		const observer = new IntersectionObserver(
+			(entries) => {
+				if (
+					entries[0].isIntersecting &&
+					query.hasNextPage &&
+					!query.isFetchingNextPage
+				) {
+					query.fetchNextPage();
+				}
+			},
+			{ threshold: 0.5 },
+		);
+
+		observer.observe(loadMoreRef);
+		onCleanup(() => observer.disconnect());
+	});
 
 	// Derived Data
-	const filteredWords = () => {
-		return vocabularyData.filter((item) => {
-			const levelMatch = item.level === currentLevel();
-			const categoryMatch =
-				selectedCategory() === "All" || item.category === selectedCategory();
-			return levelMatch && categoryMatch;
-		});
-	};
+	const flattenedWords = () => query.data?.pages.flat() || [];
 
 	const categories = [
 		"All",
-		...new Set(vocabularyData.map((item) => item.category)),
+		"Greetings",
+		"Food",
+		"Travel",
+		"Family",
+		"Nature",
+		"General",
 	];
 	const levels = ["Basic", "Intermediate", "Advanced"] as const;
 
 	// Animations
-
 
 	const handleLevelChange = (level: (typeof levels)[number], index: number) => {
 		setCurrentLevel(level);
@@ -123,23 +162,33 @@ export default function Home() {
 				{/* Vocabulary Grid */}
 				<div
 					ref={cardsContainerRef}
-					class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+					class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 min-h-[600px] transition-opacity duration-300"
+					style={{ opacity: query.isFetching && flattenedWords().length === 0 ? 0.5 : 1 }}
 				>
-					<For each={filteredWords()}>
+					<For each={flattenedWords()}>
 						{(item) => (
 							<WordCard item={item} onClick={(item) => setSelectedWord(item)} />
 						)}
 					</For>
 				</div>
 
-				{/* Empty State */}
-				<Show when={filteredWords().length === 0}>
-					<div class="text-center py-20">
+				{/* Loading / Empty State */}
+				<div ref={loadMoreRef} class="py-10 text-center">
+					<Show when={query.isFetchingNextPage}>
+						<p class="text-gray-500">Loading more...</p>
+					</Show>
+					<Show when={!query.hasNextPage && flattenedWords().length > 0}>
+						<p class="text-gray-400">No more words to load.</p>
+					</Show>
+					<Show when={flattenedWords().length === 0 && !query.isFetching && !query.isLoading}>
 						<p class="text-gray-400 text-lg">
 							No words found for this category.
 						</p>
-					</div>
-				</Show>
+					</Show>
+					<Show when={query.isLoading && flattenedWords().length === 0}>
+						<p class="text-gray-500">Loading...</p>
+					</Show>
+				</div>
 			</main>
 
 			{/* Detail Modal */}

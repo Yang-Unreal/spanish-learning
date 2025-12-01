@@ -1,10 +1,10 @@
 import { gsap } from "gsap";
 import { FiVolume2, FiX } from "solid-icons/fi";
 import { createSignal, onMount, Show } from "solid-js";
-import type { VocabularyItem } from "../vocabularyData";
+import type { Word } from "../db/schema";
 
 interface DetailModalProps {
-  item: VocabularyItem;
+  item: Word;
   onClose: () => void;
 }
 

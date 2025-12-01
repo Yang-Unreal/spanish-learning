@@ -1,11 +1,11 @@
 import { gsap } from "gsap";
 import { FiVolume2 } from "solid-icons/fi";
 import { onCleanup, onMount } from "solid-js";
-import type { VocabularyItem } from "../vocabularyData";
+import type { Word } from "../db/schema";
 
 interface WordCardProps {
-	item: VocabularyItem;
-	onClick: (item: VocabularyItem) => void;
+	item: Word;
+	onClick: (item: Word) => void;
 }
 
 export default function WordCard(props: WordCardProps) {
