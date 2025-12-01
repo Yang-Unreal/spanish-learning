@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { db } from '../db';
 import { words } from '../db/schema';
 import { vocabularyData } from '../vocabularyData';

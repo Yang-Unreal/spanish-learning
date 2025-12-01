@@ -5,7 +5,7 @@
 		"dev": "vinxi dev",
 		"build": "vinxi build",
 		"start": "vinxi start",
-		"db:seed": "tsx ./src/scripts/seed.ts",
+		"db:seed": "tsx ./src/scripts/seed-words.ts",
 		"db:migrate-photos": "tsx ./src/scripts/migrate-photos.ts",
 		"studio": "bunx drizzle-kit studio",
 		"db:push": "npx drizzle-kit push",

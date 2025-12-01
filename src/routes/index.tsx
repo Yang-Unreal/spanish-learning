@@ -72,7 +72,14 @@ export default function Home() {
 		"Travel",
 		"Family",
 		"Nature",
-		"General",
+		"Grammar",
+		"Verbs",
+		"Common Nouns",
+		"Time & Numbers",
+		"People",
+		"Society",
+		"Abstract",
+		"Adjectives",
 	];
 	const levels = ["Basic", "Intermediate", "Advanced"] as const;
 

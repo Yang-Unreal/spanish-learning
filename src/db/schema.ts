@@ -7,7 +7,14 @@ export const categoryEnum = pgEnum("category", [
 	"Travel",
 	"Family",
 	"Nature",
-	"General",
+	"Grammar",
+	"Verbs",
+	"Common Nouns",
+	"Time & Numbers",
+	"People",
+	"Society",
+	"Abstract",
+	"Adjectives",
 ]);
 export const genderEnum = pgEnum("gender", ["Masculine", "Feminine"]);
 
