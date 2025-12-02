@@ -67,19 +67,36 @@ export default function Home() {
 
 	const categories = [
 		"All",
-		"Greetings",
-		"Food",
-		"Travel",
-		"Family",
-		"Nature",
-		"Grammar",
-		"Verbs",
-		"Common Nouns",
-		"Time & Numbers",
-		"People",
-		"Society",
-		"Abstract",
-		"Adjectives",
+		// Phase 1: The Essentials
+		"Greetings & Social Courtesies",
+		"Pronouns",
+		"Question Words",
+		"Connectors",
+		"Numbers & Quantifiers",
+		"Time & Calendar",
+		// Phase 2: Me and My Life
+		"The Body & Health",
+		"Family & Relationships",
+		"Home & Furniture",
+		"Clothing & Accessories",
+		"Daily Routine",
+		// Phase 3: Food & Dining
+		"Ingredients",
+		"Drinks",
+		"Tastes & Textures",
+		"At the Restaurant",
+		// Phase 4: Out & About
+		"Transportation",
+		"City & Places",
+		"Directions & Location",
+		"Nature & Weather",
+		"Animals",
+		// Phase 5: Society, Work, & Abstract
+		"Professions",
+		"School & Study",
+		"Technology & Media",
+		"Emotions & Personality",
+		"Descriptive Adjectives",
 	];
 	const levels = ["Basic", "Intermediate", "Advanced"] as const;
 
