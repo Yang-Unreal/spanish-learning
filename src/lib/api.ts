@@ -1,7 +1,7 @@
 import { cache } from "@solidjs/router";
 import { and, eq, sql } from "drizzle-orm";
 import { db } from "../db";
-import { words } from "../db/schema";
+import { phrases, words } from "../db/schema";
 
 export const getWords = cache(async (page = 1, limit = 20, level?: string, category?: string) => {
   "use server";
@@ -23,3 +23,13 @@ export const getWords = cache(async (page = 1, limit = 20, level?: string, categ
     return [];
   }
 }, "words");
+
+export const getPhrases = cache(async () => {
+  "use server";
+  try {
+    return await db.select().from(phrases);
+  } catch (error) {
+    console.error("Failed to fetch phrases:", error);
+    return [];
+  }
+}, "phrases");

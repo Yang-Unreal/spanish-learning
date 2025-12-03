@@ -1,8 +1,8 @@
 import { type InfiniteData, useInfiniteQuery } from "@tanstack/solid-query";
 import { gsap } from "gsap";
-import { FiZap } from "solid-icons/fi";
 import { createEffect, createSignal, For, onCleanup, Show } from "solid-js";
 import DetailModal from "../components/DetailModal";
+import Header from "../components/Header";
 import WordCard from "../components/WordCard";
 import type { Word } from "../db/schema";
 import { getWords } from "../lib/api";
@@ -120,19 +120,7 @@ export default function Home() {
 	return (
 		<div class="min-h-screen bg-background pb-20">
 			{/* Sticky Header */}
-			<header class="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-100 px-6 py-4 flex items-center justify-between">
-				<div class="flex items-center gap-2">
-					<div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white font-bold text-xl">
-						H
-					</div>
-					<h1 class="text-2xl font-bold text-accent tracking-tight">Hablo</h1>
-				</div>
-
-				<div class="flex items-center gap-2 bg-orange-50 px-3 py-1.5 rounded-full border border-orange-100">
-					<FiZap class="text-orange-500" />
-					<span class="font-bold text-orange-600">12 Day Streak</span>
-				</div>
-			</header>
+			<Header />
 
 			<main class="max-w-7xl mx-auto px-6 pt-8">
 				{/* Level Switcher */}

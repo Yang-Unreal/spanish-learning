@@ -51,4 +51,16 @@ export const words = pgTable("words", {
 	gender: genderEnum("gender"),
 });
 
+export const phrases = pgTable("phrases", {
+	id: uuid("id").defaultRandom().primaryKey(),
+	word: text("word").notNull(), // The phrase itself
+	translation: text("translation").notNull(),
+	image: text("image").notNull(),
+	ipa: text("ipa"), // Optional for phrases
+	example: text("example"), // Optional for phrases
+	exampleTranslation: text("example_translation"), // Optional for phrases
+	level: levelEnum("level").default("Basic"), // Optional, default to Basic
+});
+
 export type Word = typeof words.$inferSelect;
+export type Phrase = typeof phrases.$inferSelect;
