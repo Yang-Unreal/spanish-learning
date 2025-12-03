@@ -6,8 +6,8 @@ async function seedPhrases() {
   console.log("🌱 Seeding phrases...");
 
   try {
-    // Optional: Clear existing phrases if you want a fresh start
-    // await db.delete(phrases);
+    // Clear existing phrases for a fresh start
+    await db.delete(phrases);
 
     for (const phrase of phrasesData) {
       await db.insert(phrases).values({

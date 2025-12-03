@@ -5,16 +5,48 @@ export interface PhraseItem {
 
 export const phrasesData: PhraseItem[] = [
   {
-    word: "¿Cómo estás?",
-    translation: "How are you?"
+    word: "Soy [nombre]",
+    translation: "I am [name]"
+  },
+  {
+    word: "Me llamo",
+    translation: "My name is"
+  },
+  {
+    word: "¿Cómo te llamas?",
+    translation: "What's your name?"
+  },
+  {
+    word: "Mucho gusto",
+    translation: "Nice to meet you"
   },
   {
     word: "Buenos días",
     translation: "Good morning"
   },
   {
+    word: "Buenas tardes",
+    translation: "Good afternoon"
+  },
+  {
     word: "Buenas noches",
     translation: "Good night"
+  },
+  {
+    word: "¿Cómo estás?",
+    translation: "How are you?"
+  },
+  {
+    word: "Estoy [muy] bien",
+    translation: "I'm [very] well"
+  },
+  {
+    word: "¿y tú?",
+    translation: "And you?"
+  },
+  {
+    word: "Hasta luego",
+    translation: "See you later"
   },
   {
     word: "Por favor",
