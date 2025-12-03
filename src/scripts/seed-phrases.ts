@@ -13,12 +13,8 @@ async function seedPhrases() {
       await db.insert(phrases).values({
         word: phrase.word,
         translation: phrase.translation,
-        image: phrase.image,
-        ipa: phrase.ipa,
-        example: phrase.example,
-        exampleTranslation: phrase.exampleTranslation,
-        level: phrase.level || "Basic",
       });
+      console.log(`Inserted: ${phrase.word}`);
     }
 
     console.log("✅ Phrases seeded successfully!");

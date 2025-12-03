@@ -1,5 +1,4 @@
 import { A } from "@solidjs/router";
-import { FiZap } from "solid-icons/fi";
 
 export default function Header() {
   return (
@@ -29,11 +28,6 @@ export default function Header() {
             Phrases
           </A>
         </nav>
-      </div>
-
-      <div class="flex items-center gap-2 bg-orange-50 px-3 py-1.5 rounded-full border border-orange-100">
-        <FiZap class="text-orange-500" />
-        <span class="font-bold text-orange-600">12 Day Streak</span>
       </div>
     </header>
   );

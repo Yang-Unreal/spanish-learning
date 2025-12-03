@@ -1,26 +1,16 @@
-import { createResource, createSignal, For, Show } from "solid-js";
-import DetailModal from "../components/DetailModal";
+import { FiVolume2 } from "solid-icons/fi";
+import { createResource, For, Show } from "solid-js";
 import Header from "../components/Header";
-import WordCard from "../components/WordCard";
-import type { Phrase, Word } from "../db/schema";
+import type { Phrase } from "../db/schema";
 import { getPhrases } from "../lib/api";
 
 export default function Phrases() {
 	const [phrases] = createResource(() => getPhrases());
-	const [selectedPhrase, setSelectedPhrase] = createSignal<Phrase | null>(null);
 
-	// Adapter to make Phrase compatible with WordCard which expects Word
-	const adaptPhraseToWord = (phrase: Phrase): Word => {
-		return {
-			...phrase,
-			// Provide default values for missing properties
-			category: "Abstract", // Default category
-			gender: null, // Phrases don't usually have gender in the same way nouns do
-			ipa: phrase.ipa || "",
-			example: phrase.example || "",
-			exampleTranslation: phrase.exampleTranslation || "",
-			level: phrase.level || "Basic",
-		} as Word;
+	const playAudio = (text: string) => {
+		const audioUrl = `https://audio1.spanishdict.com/audio?lang=es&text=${encodeURIComponent(text)}`;
+		const audio = new Audio(audioUrl);
+		audio.play().catch((err) => console.error("Error playing audio:", err));
 	};
 
 	return (
@@ -35,36 +25,46 @@ export default function Phrases() {
 					</p>
 				</div>
 
-				{/* Phrases Grid */}
-				<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-					<Show when={!phrases.loading} fallback={<p>Loading phrases...</p>}>
-						<For each={phrases()}>
-							{(phrase) => (
-								<WordCard
-									item={adaptPhraseToWord(phrase)}
-									onClick={() => setSelectedPhrase(phrase)}
-								/>
-							)}
-						</For>
+				{/* Phrases List */}
+				<div
+					class="bg-white rounded-2xl shadow-lg overflow-hidden"
+					style={{ opacity: phrases.loading ? 0.5 : 1 }}
+				>
+					<Show when={phrases()?.length === 0 && !phrases.loading}>
+						<div class="text-center py-10 text-gray-500">
+							No phrases found. Please seed the database.
+						</div>
+					</Show>
+					<Show when={(phrases()?.length ?? 0) > 0}>
+						<ul class="divide-y divide-gray-200">
+							<For each={phrases()}>
+								{(phrase: Phrase) => (
+									<li class="hover:bg-gray-50 transition-colors duration-200">
+										<div class="px-6 py-4 flex items-center justify-between gap-4">
+											<div class="flex-1">
+												<div class="text-xl font-bold text-accent mb-1">
+													{phrase.word}
+												</div>
+												<div class="text-lg text-gray-600">
+													{phrase.translation}
+												</div>
+											</div>
+											<button
+												type="button"
+												class="shrink-0 p-3 rounded-full bg-primary/10 text-primary hover:bg-primary hover:text-white transition-colors duration-300 cursor-pointer"
+												onClick={() => playAudio(phrase.word)}
+												aria-label={`Play pronunciation for ${phrase.word}`}
+											>
+												<FiVolume2 size={24} />
+											</button>
+										</div>
+									</li>
+								)}
+							</For>
+						</ul>
 					</Show>
 				</div>
-
-				<Show when={!phrases.loading && phrases()?.length === 0}>
-					<div class="text-center py-10 text-gray-500">
-						No phrases found. Please seed the database.
-					</div>
-				</Show>
 			</main>
-
-			{/* Detail Modal */}
-			<Show when={selectedPhrase()}>
-				{(item) => (
-					<DetailModal
-						item={adaptPhraseToWord(item())}
-						onClose={() => setSelectedPhrase(null)}
-					/>
-				)}
-			</Show>
 		</div>
 	);
 }
